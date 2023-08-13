@@ -14,9 +14,28 @@ export default class Component {
   render() {
     this.$target.innerHTML = this.template();
   }
-  setEvent() {}
+  setEvent() {
+    this.addEvent("click", ".addBtn", ({ target }) => {
+      const { items } = this.state;
+      this.setState({ items: [...items, `item${items.length + 1}`] });
+    });
+
+    this.addEvent("click", ".deleteBtn", ({ target }) => {
+      const items = [...this.state.items];
+      items.splice(target.dataset.index, 1);
+      this.setState({ items });
+    });
+  }
   setState(newState) {
     this.state = { ...this.state, ...newState };
     this.render();
+  }
+
+  addEvent(eventType, selector, callback) {
+    const children = [...this.$target.querySelectorAll(selector)];
+    this.$target.addEventListener(eventType, (event) => {
+      if (!event.target.closest(selector)) return false;
+      callback(event);
+    });
   }
 }
