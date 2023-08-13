@@ -1,18 +1,22 @@
 export default class Component {
   $target;
+  props;
   state;
-  constructor($target) {
+  constructor($target, props) {
     this.$target = $target;
+    this.props = props; // props 할당
     this.setup();
     this.setEvent(); // constructor에서 한 번만 실행한다.
     this.render();
   }
   setup() {}
+  mounted() {}
   template() {
     return "";
   }
   render() {
     this.$target.innerHTML = this.template();
+    this.mounted(); // render 이후에 추가적인 기능 수행을 위해 추가한다.
   }
   setEvent() {
     this.addEvent("click", ".addBtn", ({ target }) => {
